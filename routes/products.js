@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { productCtrl } = require('../controllers') //all functions/methods imported from people's controller's index.js
+const { productCtrl } = require('../controllers') 
 
 // ROUTES - METHODS //
 router.get('/', productCtrl.getProduct)
