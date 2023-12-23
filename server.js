@@ -1,32 +1,40 @@
 // Import necessary modules and files
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const productRoutes = require('./routes/products.js');
 const productCtrl = require('./controllers/productController');
+const Product = require('./models/product.js');
+const Order = require('./models/order.js')
+const orderRoutes = require('./routes/orderRoutes.js')
+const initializeDatabase = require("./initializeDatabase")
 // Create an Express application
 const app = express();
 
 // Middleware to parse JSON requests
 app.use(bodyParser.json());
+// MongoDB connection
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+    .then(() => {
+      console.log('Connected to MongoDB');
+      initializeDatabase(); // Call the initialization function
+      startServer();
+    })
+    .catch((error) => {
+      console.error('MongoDB connection error:', error);
+    });
 
-// Connect to MongoDB (replace the connection string)
-mongoose.connect('mongodb+srv://shactrix:Hunt3rHunt3r@muglife.oqgtw7i.mongodb.net/?retryWrites=true&w=majority', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', () => {
-  console.log('Connected to MongoDB');
-});
-
-// Use product routes
-app.use('/products', productRoutes);
-
-// Start the server
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+    function startServer() {
+        // Use product and order routes
+        app.use('/products', productRoutes);
+        app.use('/orders', orderRoutes);
+      
+        const PORT = process.env.PORT || 4000;
+        app.listen(PORT, () => {
+          console.log(`Server is running on port ${PORT}`);
+        });
+      }
