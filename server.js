@@ -7,6 +7,7 @@ const productRoutes = require('./routes/products.js');
 const productCtrl = require('./controllers/productController');
 const Product = require('./models/product.js');
 const Order = require('./models/order.js')
+const User = require('../models/user')
 const orderRoutes = require('./routes/orderRoutes.js')
 const initializeDatabase = require("./initializeDatabase")
 // Create an Express application
@@ -29,7 +30,7 @@ mongoose.connect(process.env.MONGODB_URI, {
     });
 
     function startServer() {
-        // Use product and order routes
+        app.use('/routes/user', user)
         app.use('/products', productRoutes);
         app.use('/orders', orderRoutes);
       
@@ -38,3 +39,11 @@ mongoose.connect(process.env.MONGODB_URI, {
           console.log(`Server is running on port ${PORT}`);
         });
       }
+
+
+app.use('/routes/user', user)
+app.use('/', routes)
+
+app.use((req, res) => {
+  res.status(404).json({message: 'Not a proper route!'})
+})

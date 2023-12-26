@@ -17,5 +17,5 @@ mongoose.connection
 //all code above this
 
 module.exports = {
-    People: require('./People')
+    Product: require('./Product')
 }
