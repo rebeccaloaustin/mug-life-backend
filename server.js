@@ -30,7 +30,7 @@ mongoose.connect(process.env.MONGODB_URI, {
     });
 
     function startServer() {
-        app.use('/routes/user', user)
+        app.use('/routes/user', User)
         app.use('/products', productRoutes);
         app.use('/orders', orderRoutes);
       
@@ -39,11 +39,3 @@ mongoose.connect(process.env.MONGODB_URI, {
           console.log(`Server is running on port ${PORT}`);
         });
       }
-
-
-app.use('/routes/user', user)
-app.use('/', routes)
-
-app.use((req, res) => {
-  res.status(404).json({message: 'Not a proper route!'})
-})
