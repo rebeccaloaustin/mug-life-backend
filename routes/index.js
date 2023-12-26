@@ -1,9 +1,6 @@
-// routes/index.js
-const express = require('express');
-const router = express.Router();
+const router = require("express").Router()
+const productRoute = require("./productRoutes")//import the product routing js page
 
-const productRoutes = require('./products'); 
-
-router.use('/products', productRoutes);
+router.use('/products', productRoute) //any url beginning in /product will be directed to ./productRoutes and then use the request's HTTP method sent
 
 module.exports = router;
