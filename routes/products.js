@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { productCtrl } = require('../controllers'); 
+const productCtrl = require('../controllers/productController');
 
 
 // ROUTES - METHODS //
