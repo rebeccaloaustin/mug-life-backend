@@ -7,7 +7,7 @@ const productRoutes = require('./routes/products.js');
 const productCtrl = require('./controllers/productController');
 const Product = require('./models/product.js');
 const Order = require('./models/order.js')
-const User = require('../models/user')
+const User = require('./models/user.js')
 const orderRoutes = require('./routes/orderRoutes.js')
 const initializeDatabase = require("./initializeDatabase")
 // Create an Express application
@@ -16,18 +16,18 @@ const app = express();
 // Middleware to parse JSON requests
 app.use(bodyParser.json());
 // MongoDB connection
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-    .then(() => {
-      console.log('Connected to MongoDB');
-      initializeDatabase(); // Call the initialization function
-      startServer();
-    })
-    .catch((error) => {
-      console.error('MongoDB connection error:', error);
-    });
+// mongoose.connect(process.env.MONGODB_URI, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//     .then(() => {
+//       console.log('Connected to MongoDB');
+//       initializeDatabase(); // Call the initialization function
+//       startServer();
+//     })
+//     .catch((error) => {
+//       console.error('MongoDB connection error:', error);
+//     });
 
     function startServer() {
         app.use('/routes/user', User)
