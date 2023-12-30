@@ -10,6 +10,10 @@ const bodyParser = require('body-parser');
 const routes = require('./routes/index.js')
 const users = require('./routes/user.js')
 const productRoutes = require('./routes/products.js');
+const productCtrl = require('./controllers/productController');
+const Product = require('./models/product.js');
+const Order = require('./models/order.js')
+const User = require('../models/user')
 const orderRoutes = require('./routes/orderRoutes.js')
 
 
