@@ -17,5 +17,5 @@ mongoose.connection
 //all code above this
 
 module.exports = {
-    Product: require('./Product')
+    Product: require('./product')
 }
