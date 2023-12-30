@@ -1,38 +1,39 @@
-// Import necessary modules and files
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const productRoutes = require('./routes/products.js');
-const productCtrl = require('./controllers/productController');
-const Product = require('./models/product.js');
-const Order = require('./models/order.js')
-const User = require('./models/user.js')
-const orderRoutes = require('./routes/orderRoutes.js')
-const initializeDatabase = require("./initializeDatabase")
-// Create an Express application
 const app = express();
+const mongoose = require('mongoose');
+const initializeDatabase = require("./initializeDatabase")
+const bodyParser = require('body-parser');
+
+const routes = require('./routes/index.js')
+const users = require('./routes/user.js')
+const productRoutes = require('./routes/products.js');
+const orderRoutes = require('./routes/orderRoutes.js')
+
+
 
 // Middleware to parse JSON requests
 app.use(bodyParser.json());
 // MongoDB connection
-// mongoose.connect(process.env.MONGODB_URI, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//     .then(() => {
-//       console.log('Connected to MongoDB');
-//       initializeDatabase(); // Call the initialization function
-//       startServer();
-//     })
-//     .catch((error) => {
-//       console.error('MongoDB connection error:', error);
-//     });
-
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+    .then(() => {
+      console.log('Connected to MongoDB');
+      initializeDatabase(); // Call the initialization function
+      startServer();
+    })
+    .catch((error) => {
+      console.error('MongoDB connection error:', error);
+    });
     function startServer() {
-        app.use('/routes/user', User)
+        app.use('/routes/user', users)
+        app.use('/', routes)
         app.use('/products', productRoutes);
         app.use('/orders', orderRoutes);
+        
+        // app.use('/register', userRoutes)
       
         const PORT = process.env.PORT || 4000;
         app.listen(PORT, () => {
