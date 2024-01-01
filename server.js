@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 
+var cors = require('cors')
 // const initializeDatabase = require("./initializeDatabase")
 const bodyParser = require('body-parser');
 
@@ -15,7 +16,7 @@ const orderRoutes = require('./routes/orderRoutes.js')
 
 const methodOverride = require('method-override');
 // Create an Express application
-var cors = require('cors')
+
 const PORT = process.env.PORT || 4000;
 
 // midddleware
