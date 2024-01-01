@@ -9,7 +9,7 @@ const UserSchema = new Schema({
     password: { type: String, required: true },
     role: { type: Number, default: 0 },
 })
-// stack overflow method
+
 UserSchema.pre('save', function(next) {
     var user = this;
 

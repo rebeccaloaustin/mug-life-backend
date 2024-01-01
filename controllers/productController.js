@@ -10,7 +10,15 @@ const getProduct = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
+const getProductById = async (req, res) => {
+    try {
+        const { id } = req.params;
+      const product = await Product.findById(id).exec();
+      res.json(product);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
 const createProduct = async (req, res) => {
   try {
     const { name, price, description } = req.body;
@@ -66,6 +74,7 @@ const deleteProduct = async (req, res) => {
 module.exports = {
     getProduct, 
     createProduct,
+    getProductById,
     updateProduct, 
     deleteProduct
 }
