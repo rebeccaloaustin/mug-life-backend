@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 
-const initializeDatabase = require("./initializeDatabase")
+// const initializeDatabase = require("./initializeDatabase")
 const bodyParser = require('body-parser');
 
 const routes = require('./routes/index.js')
@@ -17,16 +17,20 @@ const methodOverride = require('method-override');
 var cors = require('cors')
 const PORT = process.env.PORT || 4000;
 
-// Middleware to parse JSON requests
-// app.use(bodyParser.json());
-// MongoDB connection
+// midddleware
+app.use(cors())
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
+
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
     .then(() => {
       console.log('Connected to MongoDB');
-      initializeDatabase(); // Call the initialization function
       startServer();
     })
     .catch((error) => {
@@ -35,7 +39,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 
     function startServer() {
         app.use('/routes/user', users)
-        app.use('/', routes)
+        // app.use('/', routes)
         app.use('/products', productRoutes);
         app.use('/orders', orderRoutes);
         
