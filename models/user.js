@@ -10,13 +10,13 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    roll: {
+    role: {
         type: String,
         required: true
     },
     address: {
-        type: String,
-        required: true
+        type: String
+        // required: false
     },
     email: {
         type: String,

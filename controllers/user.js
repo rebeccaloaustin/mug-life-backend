@@ -1,44 +1,112 @@
-const express = require('express')
-const bcrypt = require('bcrypt')
-const db = require('../models')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const validateRegisterInput = require('../validation/register');
+const validateLoginInput = require('../validation/signin');
+const User = require('../models/user');
 
 const register = (req, res) => {
-    const salt = bcrypt.genSaltSync(10);
-    req.body.password = bcrypt.hashSync(req.body.password, salt);
-    db.User.findOne({username: req.body.username}, (err, userExists))
-        .then((createdUser)=> {
-            req.session.currentUser = createdUser
-            if(userExists){
-                res.status(404).json({message: 'Username already taken'})
-            } else {
-                res.status(200).json({data: createdUser})
-            }
-        })
+    const { errors, isValid } = validateRegisterInput(req.body);
+    if (!isValid) {
+        return res.status(400).json(errors);
     }
 
-const signIn = (req, res) => {
-    db.User.findOne({username: req.body.username}, (err, foundUser))
-    .then((foundUser) => {
-        const validLogin = bcrypt.compareSync(req.body.password, foundUser.password)
-        if(validLogin){
-            req.session.currentUser = foundUser
-            res.status(201).json({data: foundUser, message: 'You are signed in'})
+    User.findOne({ email: req.body.email }).then(user => {
+        if (user) {
+            return res.status(400).json({ email: 'Email already exists' });
         } else {
-            res.status(400).json({message: 'Wrong username or password'})
+            const newUser = new User({
+                name: req.body.name,
+                email: req.body.email,
+                password: req.body.password
+            });
+
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newUser.password, salt, (err, hash) => {
+                    if (err) throw err;
+                    newUser.password = hash;
+                    newUser
+                        .save()
+                        .then(user => res.json(user))
+                        .catch(err => console.log(err));
+                });
+            });
         }
-    })
-}
+    });
+};
+
+const signIn = (req, res) => {
+    const { errors, isValid } = validateLoginInput(req.body);
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    const email = req.body.email;
+    const password = req.body.password;
+
+    User.findOne({ email }).then(user => {
+        if (!user) {
+            return res.status(404).json({ emailnotfound: 'Email not found' });
+        }
+
+        bcrypt.compare(password, user.password).then(isMatch => {
+            if (isMatch) {
+                const payload = {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email
+                };
+
+                jwt.sign(
+                    payload,
+                    process.env.SECRET_KEY,
+                    {
+                        expiresIn: 31556926 // 1 year in seconds
+                    },
+                    (err, token) => {
+                        res.json({
+                            success: true,
+                            token: 'Bearer ' + token
+                        });
+                    }
+                );
+            } else {
+                return res.status(400).json({ passwordincorrect: 'Password incorrect' });
+            }
+        });
+    });
+};
 
 const signOut = (req, res) => {
-    db.User.findOne({username: req.body.username})
-    .then(() => {
-        req.session.destroy()
-    })
-}
-
+    // You don't need to handle sign-out in a stateless JWT system.
+    // Clients manage their tokens, and there's no need to explicitly "log out" on the server.
+    res.json({ message: 'Sign-out not required in a stateless JWT system.' });
+};
 
 module.exports = {
     register,
     signIn,
-    signOut,
-}
+    signOut
+};
+
+
+// const signOut = (req, res) => {
+//     // Get the token from the request headers
+//     const token = req.headers.authorization;
+  
+//     // Check if the token is in the blacklist
+//     if (tokenBlacklist.has(token)) {
+//       return res.status(401).json({ message: 'Token already invalidated' });
+//     }
+  
+//     // Invalidate the token (add it to the blacklist)
+//     tokenBlacklist.add(token);
+  
+//     res.json({ success: true, message: 'Token invalidated successfully' });
+// };
+
+
+// module.exports = {
+//     register,
+//     signIn,
+//     // signOut
+// }
