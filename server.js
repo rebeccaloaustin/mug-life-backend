@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const routes = require('./routes/index.js')
 const users = require('./routes/user.js')
 const productRoutes = require('./routes/products.js');
+
 const orderRoutes = require('./routes/orderRoutes.js')
 
 
@@ -19,6 +20,7 @@ const PORT = process.env.PORT || 4000;
 
 // Middleware to parse JSON requests
 // app.use(bodyParser.json());
+app.use(cors())
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
@@ -26,7 +28,7 @@ mongoose.connect(process.env.MONGODB_URI, {
   })
     .then(() => {
       console.log('Connected to MongoDB');
-      initializeDatabase(); // Call the initialization function
+      // initializeDatabase(); // Call the initialization function
       startServer();
     })
     .catch((error) => {
