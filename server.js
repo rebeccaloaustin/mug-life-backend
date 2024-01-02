@@ -4,7 +4,6 @@ const app = express();
 const mongoose = require('mongoose');
 
 var cors = require('cors')
-// const initializeDatabase = require("./initializeDatabase")
 const bodyParser = require('body-parser');
 
 const routes = require('./routes/index.js')
@@ -15,15 +14,11 @@ const Product = require('./models/product.js');
 const Order = require('./models/order.js')
 const User = require('./models/user')
 const orderRoutes = require('./routes/orderRoutes.js')
-const initializeDatabase = require("./initializeDatabase")
-// const methodOverride = require('method-override');
+const methodOverride = require('method-override');
 // Create an Express application
-// var cors = require('cors')
-const app = express();
 const PORT = process.env.PORT || 4000;
-app.use(cors());
 // Middleware to parse JSON requests
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI)
 mongoose.connection.once('open', ()=> {
