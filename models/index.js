@@ -15,6 +15,8 @@
 //   .on("close", () => console.log("Your are disconnected from mongoose"))
 //   .on("error", (error) => console.log(error));
 
-// module.exports = {
-//     Product: require('./product')
-// }
+//all code above this
+
+module.exports = {
+    Product: require('./Product')
+}
