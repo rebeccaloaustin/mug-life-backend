@@ -1,4 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'), Schema = mongoose.Schema,
+bcrypt = require('bcrypt'),
+SALT_WORK_FACTOR = 10;
 
 const UserSchema = new mongoose.Schema({
     name: { type: String, required: true, trim: true },
