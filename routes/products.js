@@ -4,10 +4,10 @@ const productCtrl = require('../controllers/productController');
 
 
 // ROUTES - METHODS //
-router.get('/', productCtrl.getProduct)
-router.get('/:id', productCtrl.getProductById);
-router.post('/', productCtrl.createProduct)
-router.put('/:id', productCtrl.updateProduct)
-router.delete('/:id', productCtrl.deleteProduct)
+router.get('/products/', productCtrl.getProduct)
+router.get('/products/:id', productCtrl.getProductById);
+router.post('/products/', productCtrl.createProduct)
+router.put('/products/:id', productCtrl.updateProduct)
+router.delete('/products/:id', productCtrl.deleteProduct)
 
 module.exports = router;

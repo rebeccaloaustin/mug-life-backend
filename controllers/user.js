@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+
 const jwt = require("jsonwebtoken");
 const validateRegisterInput = require("../validation/register");
 const validateLoginInput = require("../validation/signin");
@@ -67,11 +67,16 @@ const signIn = (req, res) => {
     });    
 });
 
-
-
-
-
 };
+// GET ALL USERS
+const getAllUsers = async (req, res)=>{
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 // SIGN OUT USER
 const signOut = (req, res) => {
     res.clearCookie("t");
@@ -133,5 +138,6 @@ module.exports = {
   deleteUser,
   getUserById,
   updateUser,
+  getAllUsers
 };
 

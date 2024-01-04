@@ -1,14 +1,19 @@
 const router = require('express').Router();
-const { register, signIn, signOut, deleteUser, getUserById, updateUser } = require('../controllers/user');
+const { register, signIn, signOut, deleteUser, getUserById, updateUser, getAllUsers } = require('../controllers/user');
+
+// GET USER BY ID
+router.get('/users', getAllUsers);
+// GET USER BY ID
+router.get('/users/:id', getUserById);
 
 // REGISTER
 router.post('/register', register);
 
 // SIGNIN
-router.post('/signin', signIn);
+router.post('auth/signin', signIn);
 
 // SIGNOUT
-router.post('/signout', signOut);
+router.post('autn/signout', signOut);
 
 // DELETE USER
 router.delete('/users/:id', deleteUser);
