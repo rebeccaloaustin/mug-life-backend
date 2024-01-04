@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 var cors = require("cors");
 const bodyParser = require("body-parser");
 const productRoutes = require("./routes/products.js");
-const userRoutes = require("./routes/user.js");
+
 const userRoutes = require("./routes/userRoutes.js");
 const methodOverride = require("method-override");
 
