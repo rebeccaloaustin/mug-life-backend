@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { register, signIn, signOut } = require('../controllers/user');
+const { register, signIn, signOut, deleteUser, getUserById, updateUser } = require('../controllers/user');
 
 // REGISTER
 router.post('/register', register);
@@ -9,6 +9,16 @@ router.post('/signin', signIn);
 
 // SIGNOUT
 router.post('/signout', signOut);
+
+// DELETE USER
+router.delete('/users/:id', deleteUser);
+
+// GET USER BY ID
+router.get('/users/:id', getUserById);
+
+// UPDATE USER
+router.put('/users/:id', updateUser);
+
 
 module.exports = router;
 

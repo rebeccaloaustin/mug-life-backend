@@ -4,6 +4,7 @@ const validateRegisterInput = require("../validation/register");
 const validateLoginInput = require("../validation/signin");
 const User = require("../models/user");
 
+// REGISTER USER
 const register = (req, res) => {
 
   User.findOne({ email: req.body.email }).then((user) => {
@@ -27,7 +28,7 @@ const register = (req, res) => {
     }
   });
 };
-
+// SIGN IN USER
 const signIn = (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -71,15 +72,66 @@ const signIn = (req, res) => {
 
 
 };
-
+// SIGN OUT USER
 const signOut = (req, res) => {
     res.clearCookie("t");
     res.json({ message: "Success" });
+};
+
+// DELETE USER 
+const deleteUser = (req, res) => {
+  const userId = req.params.id;
+
+  User.findByIdAndRemove(userId)
+    .then(() => {
+      res.json({ success: true, message: 'User deleted successfully' });
+    })
+    .catch((err) => {
+      res.status(500).json({ success: false, error: err.message });
+    });
+};
+
+// GET USER BY ID
+const getUserById = (req, res) => {
+  const userId = req.params.id;
+
+  User.findById(userId)
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+      }
+
+      res.json({ success: true, user });
+    })
+    .catch((err) => {
+      res.status(500).json({ success: false, error: err.message });
+    });
+};
+
+// UPDATE USER 
+const updateUser = (req, res) => {
+  const userId = req.params.id;
+  const updateData = req.body;
+
+  User.findByIdAndUpdate(userId, updateData, { new: true })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+      }
+
+      res.json({ success: true, user });
+    })
+    .catch((err) => {
+      res.status(500).json({ success: false, error: err.message });
+    });
 };
 
 module.exports = {
   register,
   signIn,
   signOut,
+  deleteUser,
+  getUserById,
+  updateUser,
 };
 
