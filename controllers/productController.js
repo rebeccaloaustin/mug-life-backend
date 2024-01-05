@@ -4,7 +4,7 @@ const Product = require("../models/Product");
 const fs = require("fs");
 const formidable = require("formidable");
 const lodash = require("lodash");
-const { errorHandler } = require("../helpers/dbErrorHandler");
+// const { errorHandler } = require("../helpers/dbErrorHandler");
 
 const getProduct = async (req, res) => {
   try {
@@ -39,9 +39,9 @@ const createProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, price, description } = req.body;
+    const { name, price, description, image } = req.body;
 
-    const updatedProduct = await Product.findByIdAndUpdate(id, { name, price, description }, { new: true });
+    const updatedProduct = await Product.findByIdAndUpdate(id, { name, price, description, image }, { new: true });
 
     if (!updatedProduct) {
       return res.status(404).json({ message: 'Product not found' });
