@@ -32,18 +32,20 @@ const register = (req, res) => {
 const signIn = (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
+  console.log(password);
   User.findOne({ email: email}, function(err, user) {
     if (err) throw err;
      
     // test a matching password
     user.comparePassword(password, function(err, isMatch) {
         if (err) throw err;
-        console.log(password, isMatch); 
+ 
         if (isMatch) {
             const payload = {
               id: user._id,
               name: user.name,
               email: user.email,
+              role: user.role
             };
             jwt.sign(
               payload,

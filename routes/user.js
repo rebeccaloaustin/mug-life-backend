@@ -7,13 +7,13 @@ router.get('/users', getAllUsers);
 router.get('/users/:id', getUserById);
 
 // REGISTER
-router.post('/register', register);
+router.post('/users/register', register);
 
 // SIGNIN
-router.post('auth/signin', signIn);
+router.post('/auth/signin', signIn);
 
 // SIGNOUT
-router.post('autn/signout', signOut);
+router.post('/auth/signout', signOut);
 
 // DELETE USER
 router.delete('/users/:id', deleteUser);
